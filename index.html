@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Website</title>
+    <style>
+        #form{
+            width: 200px;
+            margin: auto;
+        }
+        #form > input:nth-child(3){
+            margin-left: 50px;
+        }
+        #movie{
+            width: 300px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <form id="form">
+        <input type="text"  id="title">
+        <p></p>
+        <input type="submit" value="Get Movie">
+        <p></p>
+    </form>
+    <div id="movie">
+
+    </div>
+    <script type="text/javascript">
+        window.addEventListener("load",function(){
+            var form = document.getElementById("form");
+            form.addEventListener("submit",handleSearch)
+        })
+        function getMovie(title){
+            return fetch(`http://www.omdbapi.com/?t=${title}&apikey=18122219`)
+            .then((res)=> res.json())
+        }
+        function handleSearch(e){
+            e.preventDefault();
+            const title = document.getElementById("title").value;
+            getMovie(title)
+            .then(function(res){
+                const div = document.getElementById("movie");
+                div.innerHTML = "";
+                const img = document.createElement("img");
+                const titleEle = document.createElement("h4");
+                const releaseDate = document.createElement("p");
+                const genre = document.createElement("p");
+                const imdbRating = document.createElement("p");
+                img.src = res.Poster;
+                titleEle.textContent = "Movie Name : " +res.Title;
+                releaseDate.textContent = "Release Date : " +res.Released;
+                genre.textContent = "Genre : "+res.Genre;
+                imdbRating.textContent = "IMDB Rating : " +res.imdbRating;
+                div.append(img,titleEle,releaseDate,genre,imdbRating)
+            })
+        }
+        // handleSearch();
+    </script>
+</body>
+</html>
