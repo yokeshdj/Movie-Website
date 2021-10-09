@@ -39,7 +39,11 @@ function handleSearch(e) {
                 releaseDate.textContent = "Release Date : " + res.Released;
                 genre.textContent = "Genre : " + res.Genre;
                 imdbRating.textContent = "IMDB Rating : " + res.imdbRating;
-                div.append(img,titleEle,releaseDate,genre,imdbRating)
+                const recEle = document.createElement("h1");
+                if(res.imdbRating > 8.5){
+                    recEle.textContent = "Recommended";
+                }
+                div.append(recEle,img,titleEle,releaseDate,genre,imdbRating)
             }
         })
         .catch((err) => {
